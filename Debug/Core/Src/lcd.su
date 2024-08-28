@@ -1,0 +1,12 @@
+../Core/Src/lcd.c:46:6:LCD_Test	48	static
+../Core/Src/lcd.c:97:6:LCD_SetBrightness	16	static
+../Core/Src/lcd.c:102:10:LCD_GetBrightness	4	static
+../Core/Src/lcd.c:111:6:LCD_Light	48	static
+../Core/Src/lcd.c:159:6:LCD_ShowChar	128	dynamic
+../Core/Src/lcd.c:243:6:LCD_ShowString	40	static
+../Core/Src/lcd.c:258:16:lcd_init	16	static
+../Core/Src/lcd.c:265:16:lcd_gettick	8	static
+../Core/Src/lcd.c:270:16:lcd_writereg	32	static
+../Core/Src/lcd.c:287:16:lcd_readreg	24	static
+../Core/Src/lcd.c:304:16:lcd_senddata	24	static
+../Core/Src/lcd.c:318:16:lcd_recvdata	24	static
