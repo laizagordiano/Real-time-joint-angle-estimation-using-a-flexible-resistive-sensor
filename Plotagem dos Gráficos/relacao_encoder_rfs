@@ -1,0 +1,85 @@
+import matplotlib.pyplot as plt
+
+def ler_dados(arquivo):
+    adc_valores = []
+    encoder_valores = []
+    try:
+        with open(arquivo, 'r') as f:
+            linhas = f.readlines()
+            for linha in linhas:
+                if "ADC1" in linha:
+                    adc_valores.append(int(linha.split(":")[1].strip()[:-2]))
+                elif "Encoder" in linha:
+                    encoder_valores.append(int(linha.split(":")[1].strip()[:-2]))
+    except FileNotFoundError:
+        print(f"Erro: O arquivo '{arquivo}' não foi encontrado.")
+        return [], []
+    except Exception as e:
+        print(f"Erro ao ler o arquivo: {e}")
+        return [], []
+    return adc_valores, encoder_valores
+
+def adc_para_graus(adc, adc_minimo=47, adc_maximo=2539.67, graus_maximo=90):
+    graus = (adc - adc_minimo) * graus_maximo / (adc_maximo - adc_minimo)
+    graus = max(0, min(graus_maximo, graus))
+    return graus
+
+def converter_adc_para_graus(adc_lista):
+    graus_lista = []
+    for valor_adc in adc_lista:
+        graus = adc_para_graus(valor_adc)
+        graus_lista.append(graus)
+    return graus_lista
+
+def encoder_para_graus(encoder):
+    graus = (encoder - 0) * 90 / (586 - 0)
+    graus = max(0, min(90, graus))
+    return graus
+
+def converter_encoder_para_graus(encoder_lista):
+    graus_lista = []
+    for valor_encoder in encoder_lista:
+        graus = encoder_para_graus(valor_encoder)
+        graus_lista.append(graus)
+    return graus_lista
+
+# Caminho para o arquivo de dados
+arquivo_dados = r'C:\Users\laiza\Downloads\rapido.txt'
+
+# Leitura dos dados do arquivo
+adc, encoder = ler_dados(arquivo_dados)
+
+# Conversão dos valores de ADC e Encoder para graus
+graus_adc = converter_adc_para_graus(adc)
+graus_encoder = converter_encoder_para_graus(encoder)
+
+# Ajustar o comprimento das listas
+min_length = min(len(graus_adc), len(graus_encoder))
+graus_adc = graus_adc[:min_length]
+graus_encoder = graus_encoder[:min_length]
+
+# Criação do gráfico
+plt.figure(figsize=(10, 6))
+
+# Plotar a relação entre RFS e Encoder
+plt.plot(graus_encoder, graus_adc, linestyle='--', color='b', label='Relação RFS vs Encoder')
+
+# Adicionar título e rótulos
+plt.title('Relação entre Ângulo do RFS e Ângulo do Encoder')
+plt.xlabel('Ângulo do Encoder (Graus)')
+plt.ylabel('Ângulo do RFS (Graus)')
+
+# Definir os limites dos eixos
+
+
+# Configurar os ticks do eixo X e Y para saltar de 20 em 20
+plt.xticks(range(0, 91, 20))
+plt.yticks(range(0, 91, 20))
+
+# Adicionar grade e legenda
+plt.grid(True)
+plt.legend()
+
+# Exibir gráfico
+plt.tight_layout()
+plt.show()
